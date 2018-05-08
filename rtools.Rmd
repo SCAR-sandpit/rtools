@@ -1,0 +1,245 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+## Data retrieval
+
+[The Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/), [The Ocean Biogeographic Information System (OBIS)](http://www.iobis.org/) and <a href = "http://biodiversity.aq">ANTABIF</a> all provide species occurrence data at the global scale. As the GBIF harbors occurrences of both terrestrial and marine species,the OBIS is the most comprehensive source of marine species occurrences and ANTABIF aims to establish as an authority of biodiversity data for Antarctica and the Southern Ocean.
+
+As the ANTABIF API is an ongoing project, this page presents occurrence retrievals of GBIF and OBIS data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
+
+### GBIF
+<a href = "https://ropensci.org/tutorials/rgbif_tutorial/">rgbif</a> helps users to retrieve data from the GBIF. 
+```
+occ_search() is a function for searching GBIF occurrence data.
+
+#search by scientificName.
+occ_search(scientificName = 'Ursus americanus', limit = 0, return = "meta")
+
+#search by dataset key.
+occ_search(datasetKey='7b5d6a48-f762-11e1-a439-00145eb45e9a', return='data', limit=20)
+
+# Search on latitidue and longitude
+occ_search(search="kingfisher", decimalLatitude=50, decimalLongitude=-10)
+```
+Alternatively, users can download data directly from GBIF. For instance, [Antarctic Plant Database]("https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a") harbors more than 50,000 occurrences of over 40,000 plant specimens from Antarctica, the sub-Antarctic islands and surrounding continents. 
+
+Another way to retrieve data from the GBIF is by employing the API.
+
+
+### OBIS
+<a href = "https://github.com/iobis/robis">robis</a> helps users to retrieve data from the OBIS.
+
+```
+install.packages("rgbif")
+library("rgbif")
+occ_get(key=c(101010, 240713150, 855998194), return='data')
+```
+
+## Data cleaning wrangling {.tabset}
+### tidyverse
+The <a href = "https://www.tidyverse.org/packages/"> **tidyverse**</a> is a collection of R packages designed for data science. The collection includes <a href = "http://dplyr.tidyverse.org/">**dplyr**</a> for data frame creation and manipulation, <a href = "http://readr.tidyverse.org/">**readr**</a> and <a href = "http://readxl.tidyverse.org/">**readxl**</a> for reading data from text or EXCEL files, <a href = "http://purrr.tidyverse.org/">**purrr**</a> for speeding up functional prorgramminga and <a href = "http://ggplot2.tidyverse.org/">**ggplot2**</a> for visualization. 
+
+Users can install all the packages in the tidyverse by running 
+
+``` 
+install.packages("tidyverse")
+```
+
+Alternatively, install one or more single package(s) by running, for instance,
+
+```
+install.packages("tidyr")
+install.packages("dplyr")
+```
+
+Or download the development versions from GitHub
+```
+devtools::install_github("tidyverse/tidyr")
+devtools::install_github("tidyverse/dplyr")
+```
+
+### rrefine
+OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> allows users to programmatically triger data transfer between R and 'OpenRefine'. 
+
+### obistools
+
+## Taxonomy Tools {.tabset}
+
+### taxasize
+
+### biotaxa
+
+## Visualization
+The [Github page of Australian Antarctic Data Center](https://github.com/AustralianAntarcticDataCentre/antanym-demo) hosts nice source code for polar stereographic projection.
+
+To run the piece of code, first install the leaflet package of the rstudio version.
+```
+devtools::install_github("rstudio/leaflet")
+library(leaflet)
+library(dplyr)
+```
+
+```
+library(antanym)
+library(leaflet)
+g <- an_read()
+
+## find single name per feature, preferring United Kingdom
+##  names where available, and only rows with valid locations
+temp <- g %>% an_preferred("United Kingdom")
+temp <- temp[!is.na(temp$longitude) & !is.na(temp$latitude),]
+
+## replace NAs with empty strings in narrative
+temp$narrative[is.na(temp$narrative)] <- ""
+
+## formatted popup HTML
+popup <- sprintf("<h1>%s</h1><p><strong>Country of origin:</strong> %s<br />
+  <strong>Longitude:</strong> %g<br /><strong>Latitude:</strong> %g<br />
+  <a href=\"https://data.aad.gov.au/aadc/gaz/scar/display_name.cfm?gaz_id=%d\">
+    Link to SCAR gazetteer</a></p>",temp$place_name,temp$country_name,
+  temp$longitude,temp$latitude,temp$gaz_id)
+
+m <- leaflet() %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addMarkers(lng = temp$longitude, lat = temp$latitude, group = "placenames",
+    clusterOptions = markerClusterOptions(),popup = popup,
+    label = temp$place_name)
+
+startZoom <- 1
+
+crsAntartica <-  leafletCRS(
+  crsClass = 'L.Proj.CRS',
+  code = 'EPSG:3031',
+  proj4def = '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  resolutions = c(8192, 4096, 2048, 1024, 512, 256),
+  origin = c(-4194304, 4194304),
+  bounds =  list( c(-4194304, -4194304), c(4194304, 4194304) )
+)
+
+mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCopyJump = FALSE)) %>%
+    setView(0, -90, startZoom) %>%
+    addCircleMarkers(lng = temp$longitude, lat = temp$latitude, group = "placenames",
+                     popup = popup, label = temp$place_name,
+                     fillOpacity = 0.5, radius = 8, stroke = FALSE, color = "#000",
+					 labelOptions = labelOptions(textOnly = FALSE)) %>%
+    addWMSTiles(baseUrl = "https://maps.environments.aq/mapcache/antarc/?",
+                layers = "antarc_ramp_bath_shade_mask",
+                options = WMSTileOptions(format = "image/png", transparent = TRUE),
+                attribution = "Background imagery courtesy <a href='http://www.environments.aq/'>environments.aq</a>") %>%
+    addGraticule()
+mps
+```
+
+
+
+
+## Examples 
+This exmple demonstrates a simple workflow of applying the basic RTools for data retrieval, cleaning, analysis and visulisation. Users are encouraged to explore more themselves and apply appropriately.
+
+```
+install.packages(c("rgbif", "tidyverse", "sp", "raster"))
+library(rgbif)
+library(tidyverse)
+library(sp)
+library(mapr)
+library(raster)
+```
+###occ_search()
+Here we use [Antarctic Plant Database]("https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a") as an example. After downloading the entire dataset from the GBIF, we can start exploring it for a bit.  We aim to understand how each species in this dataset distributes in the interested region (Antarctica and sub-Antarctica) and across the globe.
+```
+setwd("") #set working directory to where the dataset is saved
+occurrence <- read.table("occurrence.txt", header = T, sep = "\t", fill = TRUE, quote = "")
+#get an overview of the dataset
+head(occurrence)
+#find the dimension of the dataset
+dim(occurrence) #Here it shows there are 52,181 occurrences
+#find how many unique taxon keys there are in the dataset. 
+length(unique(occurrence$taxonKey)) #there are 2,653 unique taxon keys
+```
+
+We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ_search() and compute their regional distributions in Antarctica (60-90$^\circ$S), subantarctica (45-60$^\circ$S), south temperate (30-45$^\circ$S), tropics (30$^\circ$N-30$^\circ$S), north temperate (30-60$^\circ$N) and the arctic (60-90$^\circ$N).
+
+First, we write a function to retrieve all of the occurrence data of the 10 taxon keys via using occ_search() and compute their regional distributions
+
+```
+whereGet <- function(taxonKey) {
+  dd <- occ_search(taxonKey, return = "data")
+  lats <- na.omit(dd$decimalLatitude) #discard occurrences without latitudes
+  Antarctic <- subset(lats, lats >= -90 & lats <= -60)
+  Subantarctic <- subset(lats, lats > -60 & lats <= -45)
+  South_temperate <- subset(lats, lats > -45 & lats <= -30)
+  Tropical <- subset(lats, lats > -30 & lats < 30)
+  North_temperate <- subset(lats, lats >= 30 & lats < 60)
+  Arctic <- subset(lats, lats >= 60 & lats <= 90)
+
+  if(length(lats) != 0) {
+    prop_antarctic <- round(length(Antarctic)/length(lats), digits = 3)
+    prop_subantarctic <- round(length(Subantarctic)/length(lats), digits = 3)
+    prop_south_temperate <- round(length(South_temperate)/length(lats), digits = 3)
+    prop_tropical <- round(length(Tropical)/length(lats), digits = 3)
+    prop_north_temperate <- round(length(North_temperate)/length(lats), digits = 3)
+    prop_arctic <- round(length(Arctic)/length(lats), digits = 3)
+    return(c(prop_antarctic = prop_antarctic, prop_subantarctic = prop_subantarctic, prop_south_temperate = prop_south_temperate, prop_tropical = prop_tropical, prop_north_temperate = prop_north_temperate, prop_arctic = prop_arctic))
+
+  } else {
+    return(c(prop_antarctic = NA, prop_subantarctic = NA, prop_south_temperate = NA, prop_tropical = NA, prop_north_temperate = NA, prop_arctic = NA))
+  }
+
+}
+
+```
+collect the first taxon keys in the dataset
+```
+taxonKeys <- occurrence$taxonKey[1:10] 
+props2 <- do.call(rbind, props)
+head(props2)
+```
+
+
+```
+First, retrieve the occurrence data of krills within the given geometric range. In this example, we set up a limit of 5000 occurrences. This may take a while.
+occ_Actinia <- occ_search(scientificName = "Actinia", return = "data", limit = 5000, hasCoordinate = T)
+occ_Actinia <- data.frame(occ_Actinia)
+#have a view of the data columns
+colnames(occ_Actinia)
+
+#You can save the dataset in your favoriate directory.
+write.csv(occ_Actinia, ".../occ_Actinia.csv", row.names = FALSE)
+
+#LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
+map_leaflet(occ_krills, "decimalLongitude", "decimalLatitude", size=1, color="blue")
+xy <- occ_krills[c("decimalLongitude","decimalLatitude")]
+#download an environmental layer
+env <- getData('worldclim', var='bio', res=10) 
+title(main = bquote(italic(.("Euphausia superba")) ~occurrences~on~Annual~mean~temperature~'(dCx10)'))
+points(xy, col='blue', pch=20)
+
+```
+
+```
+plot(env, 1, main=NULL, axes=FALSE)
+```
+the use of R package antanym
+```
+library(antanym)
+my_longitude <- c(-180, -120)
+my_latitude <- c(-90, -60)
+this_names <- an_filter(g, extent = c(my_longitude, my_latitude))
+```
+
+## ropensci
+In addition to the above mentioned R packages and tools, [ropensci](https://ropensci.org/) is an online forum open to all interested programmers and scientists for R package development. Users can find an amazing array of interesting tools and contribute to the developent of all R packages.
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+`
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
