@@ -5,13 +5,15 @@ Hsun-Yi Hsieh
 Occurrence data retrieval
 -------------------------
 
-[The Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/), [the Ocean Biogeographic Information System (OBIS)](http://www.iobis.org/) and <a href = "http://biodiversity.aq">ANTABIF</a> all provide species occurrence data at the global scale. As the GBIF harbors occurrences of both terrestrial and marine species, the OBIS is the most comprehensive source of marine species occurrences and ANTABIF aims to establish as an authority of biodiversity data for Antarctica and the Southern Ocean.
+[The Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/), [the Ocean Biogeographic Information System (OBIS)](http://www.iobis.org/) and <a href = "http://biodiversity.aq">ANTABIF</a> all provide species occurrence data. As the GBIF harbors occurrences of both terrestrial and marine species at the globa scale, the OBIS is the most comprehensive source of marine species occurrences and ANTABIF aims to establish as an authority of biodiversity data for Antarctica and the Southern Ocean.
 
-As the construction of the ANTABIF API is an ongoing project, this page presents occurrence retrievals, analyses and visualizations of GBIF and OBIS data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
+The construction of the ANTABIF API is an ongoing project. This page presents occurrence retrievals, analyses and visualizations of GBIF and OBIS data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
 
 ### GBIF
 
-As a widely used R package, <a href = "https://ropensci.org/tutorials/rgbif_tutorial/">rgbif</a> helps users retrieve data from the GBIF. [occ\_download()](%22https://www.rdocumentation.org/packages/rgbif/versions/0.9.9/topics/occ_download%22) and [occ\_search()](%22https://www.rdocumentation.org/packages/rgbif/versions/0.9.9/topics/occ_search%22) are two common functions for retrieving GBIF occurrence data. Users can customize searched by paramter specifications. For instance,
+<a href = "https://ropensci.org/tutorials/rgbif_tutorial/">rgbif</a> helps users to retrieve data from the GBIF.
+
+    occ_search() is a function for searching GBIF occurrence data.
 
     #search by scientificName.
     occ_search(scientificName = 'Ursus americanus', limit = 0, return = "meta")
@@ -20,12 +22,14 @@ As a widely used R package, <a href = "https://ropensci.org/tutorials/rgbif_tuto
     occ_search(datasetKey='7b5d6a48-f762-11e1-a439-00145eb45e9a', return='data', limit=20)
 
     # Search on latitidue and longitude
-    occ_search(search="kingfisherk", decimalLatitude=50, decimalLongitude=-10)
-    occ_download('decimalLatitude <= -65')
+    occ_search(search="kingfisher", decimalLatitude=50, decimalLongitude=-10)
 
-Alternatively, users can download data directly from GBIF. For example, [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) harbors more than 50,000 occurrences of over 40,000 plant specimens from Antarctica, the sub-Antarctic islands and surrounding continents.
+Alternatively, users can download data directly from GBIF. For instance, [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) harbors more than 50,000 occurrences of over 40,000 plant specimens from Antarctica, the sub-Antarctic islands and surrounding continents.
 
-Another way to retrieve data from the GBIF is by employing the API.
+Users can also download and import the data directly in one step as follows.
+
+    dd_gbif <- occ_download_get(key = "0000066-140928181241064", overwrite = TRUE) %>% 
+        occ_download_import(dd_gbif_download, na.strings = c("", NA))
 
 ### OBIS
 
@@ -34,9 +38,12 @@ Another way to retrieve data from the GBIF is by employing the API.
     install.packages("rgbif")
     library("rgbif")
     occ_get(key=c(101010, 240713150, 855998194), return='data')
+    occ_get(key=c(855998194, 620594291, 766420684),
+       fields=c('scientificName', 'decimalLatitude', 'basisOfRecord'),
+       verbatim=TRUE)
 
-Data cleaning wrangling
------------------------
+Data browsing, cleaning wrangling
+---------------------------------
 
 ### tidyverse
 
