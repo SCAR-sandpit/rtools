@@ -76,6 +76,111 @@ Taxonomy Tools
 
 ### biotaxa
 
+biotaxa is a tool for the exploration and visualization of taxa discovery.
+
+To install the package,
+
+``` r
+devtools::install_github("hhsieh/biotaxa_Rpackage")
+```
+
+    ## Downloading GitHub repo hhsieh/biotaxa_Rpackage@master
+    ## from URL https://api.github.com/repos/hhsieh/biotaxa_Rpackage/zipball/master
+
+    ## Installing biotaxa
+
+    ## Downloading GitHub repo tidyverse/ggplot2@master
+    ## from URL https://api.github.com/repos/tidyverse/ggplot2/zipball/master
+
+    ## Installing ggplot2
+
+    ## Downloading GitHub repo jimhester/withr@master
+    ## from URL https://api.github.com/repos/jimhester/withr/zipball/master
+
+    ## Installing withr
+
+    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe45997eb7/r-lib-withr-79d7b0d'  \
+    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
+
+    ## 
+
+    ## Downloading GitHub repo hadley/scales@master
+    ## from URL https://api.github.com/repos/hadley/scales/zipball/master
+
+    ## Installing scales
+
+    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe9a75b98/hadley-scales-d767915'  \
+    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
+
+    ## 
+
+    ## Downloading GitHub repo r-lib/rlang@master
+    ## from URL https://api.github.com/repos/r-lib/rlang/zipball/master
+
+    ## Installing rlang
+
+    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe215a22d8/r-lib-rlang-b197278'  \
+    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
+
+    ## 
+
+    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe2bfd985a/tidyverse-ggplot2-d3bd92e'  \
+    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
+
+    ## 
+
+    ## Downloading GitHub repo iobis/robis@master
+    ## from URL https://api.github.com/repos/iobis/robis/zipball/master
+
+    ## Installing robis
+
+    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe4874a99a/iobis-robis-8a47f66'  \
+    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
+
+    ## 
+
+    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe2de4d31d/hhsieh-biotaxa_Rpackage-e484150'  \
+    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
+
+    ## 
+
+``` r
+library(biotaxa)
+```
+
+To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
+
+``` r
+head(data_m)
+```
+
+    ##   AphiaIDs  Kingdoms      Phyla           Classes       Orders
+    ## 1   610727 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 2   149387 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 3   677605 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 4   160618 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 5   661772 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 6   160622 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ##        Families     Genera year
+    ## 1 Achnanthaceae Achnanthes 1996
+    ## 2 Achnanthaceae Achnanthes 1824
+    ## 3 Achnanthaceae Achnanthes 1965
+    ## 4 Achnanthaceae Achnanthes 1895
+    ## 5 Achnanthaceae Achnanthes 1963
+    ## 6 Achnanthaceae Achnanthes 1880
+
 Visualization
 -------------
 

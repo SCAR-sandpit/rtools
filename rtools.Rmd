@@ -82,6 +82,16 @@ OpenRefine is an open source data cleaning software. <a href = "http://openrefin
 ### biotaxa 
 biotaxa is a tool for the exploration and visualization of taxa discovery.
 
+To install the package, 
+```{r}
+devtools::install_github("hhsieh/biotaxa_Rpackage")
+library(biotaxa)
+```
+To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
+```{r}
+head(data_m)
+```
+
 
 ## Visualization
 The [Github page of Australian Antarctic Data Center](https://github.com/AustralianAntarcticDataCentre/antanym-demo) hosts nice source code for polar stereographic projection.
