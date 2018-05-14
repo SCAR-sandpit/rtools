@@ -377,4 +377,4 @@ points(xy, col='blue', pch=20)
 ropensci
 --------
 
-In addition to the above mentioned R packages and tools, [ropensci](https://ropensci.org/) is an online forum open to all interested programmers and scientists for the use and development of R packages. Users can find an amazing array of interesting tools and contribute to the developent of all R packages.
+In addition to the above mentioned R packages and tools, [ropensci](https://ropensci.org/) is an online forum open to all interested programmers and scientists for the use and development of R packages. Users can find an amazing array of interesting tools and contribute to their development.
