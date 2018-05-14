@@ -283,7 +283,7 @@ mps
 
 
 
-## Examples 
+## Workflow demonstration 
 This exmple demonstrates a simple workflow of applying the basic RTools for data retrieval, cleaning, analysis and visulisation. Users are encouraged to explore more themselves and apply appropriately.
 
 ```
