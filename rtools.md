@@ -61,8 +61,8 @@ data <- occurrence("Actinauge verrillii", fields = c("decimalLongitude", "decima
 data <- occurrence("Actinauge verrillii", geometry = "POLYGON ((54.60 51.16772, 2.62436 51.14059, 2.76066 51.19225, 2.73216 51.20946, 54.60 51.16772))")
 ```
 
-Data browsing, cleaning wrangling
----------------------------------
+Data browsing, cleaning and wrangling
+-------------------------------------
 
 **- tidyverse -**</br> The <a href = "https://www.tidyverse.org/packages/"> **tidyverse**</a> is a collection of R packages designed for data science. The collection includes <a href = "http://dplyr.tidyverse.org/">**dplyr**</a> for data frame creation and manipulation, <a href = "http://readr.tidyverse.org/">**readr**</a> and <a href = "http://readxl.tidyverse.org/">**readxl**</a> for reading data from text or EXCEL files, <a href = "http://purrr.tidyverse.org/">**purrr**</a> for speeding up functional prorgramminga and <a href = "http://ggplot2.tidyverse.org/">**ggplot2**</a> for visualization.
 
@@ -135,7 +135,7 @@ More functions can be found on \[obis github\]<https://github.com/iobis/obistool
 Taxonomy Tools
 --------------
 
-**taxize**</br> taxize is capable of collecting different taxonomic data sources online, including NCBI, ITIS, GBIF, EOL, IUCN and more. For instance,
+**- taxize -**</br> [taxize](https://ropensci.org/tutorials/taxize_tutorial/) is capable of collecting different taxonomic data sources online, including NCBI, ITIS, GBIF, EOL, IUCN and more. For instance,
 
 `get_wormsid` gets WORMS identifiers.
 
@@ -143,7 +143,7 @@ Taxonomy Tools
 ids <- get_wormsid(c("Actinostola crassicornis", "Actinostola", 'Actinostola georgiana'))
 ```
 
-**biotaxa**</br> biotaxa is a tool for the exploration and visualization of taxa discovery.
+**- biotaxa -**</br> [biotaxa](https://github.com/hhsieh/rtools2) is a tool for the exploration and visualization of taxa discovery.
 
 To install the package,
 
@@ -298,10 +298,10 @@ To run the piece of code, first install the leaflet package of the rstudio versi
         addGraticule()
     mps
 
-Examples
---------
+Workflow demonstration
+----------------------
 
-This exmple demonstrates a simple workflow of applying the basic RTools for data retrieval, cleaning, analysis and visulisation. Users are encouraged to explore more themselves and apply appropriately.
+This exmple demonstrates a simple workflow of applying the basic RTools for data retrieval, cleaning, analysis and visulisation.
 
     install.packages(c("rgbif", "tidyverse", "sp", "raster"))
     library(rgbif)
@@ -309,8 +309,6 @@ This exmple demonstrates a simple workflow of applying the basic RTools for data
     library(sp)
     library(mapr)
     library(raster)
-
-### occ\_search()
 
 Here we use [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) as an example. After downloading the entire dataset from the GBIF, we can start exploring it for a bit. We aim to understand how each species in this dataset distributes in the interested region (Antarctica and sub-Antarctica) and across the globe.
 
