@@ -155,6 +155,7 @@ library(biotaxa)
 To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
 
 ``` r
+library(biotaxa)
 head(data_m)
 ```
 
@@ -173,13 +174,49 @@ head(data_m)
     ## 5 Achnanthaceae Achnanthes 1963
     ## 6 Achnanthaceae Achnanthes 1880
 
-To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`.
+To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`</br>
 
 ``` r
-#taxaaccum("Animalia", "Genus")
+taxaaccum("Animalia", "Genus")
 ```
 
-To list and rank all of the genera belonging to Family 'Salpidae' fc &lt;- frequencyrank("Salpidae", "Genus") fc &lt;- fc\[fc$Genus != "", \] \#fc
+![](rtools_files/figure-markdown_github/unnamed-chunk-15-1.png)
+
+`frequencyrank()` lists and ranks all of the lower taxa of a higher taxa by frequency.</br>
+
+``` r
+fc <- frequencyrank("Salpidae", "Genus")
+fc <- fc[fc$Genus != "", ]
+fc
+```
+
+    ##    Genus freq
+    ## 3  Ihlea    6
+    ## 5  Salpa    6
+    ## 6 Thalia    2
+    ## 2  Iasis    1
+    ## 4  Pegea    1
+
+`OBIS_imprecisionrate()` finds out the proportion of taxa occurrences on OBIS unidentified to species levels. </br>
+
+``` r
+OBIS_imprecisionrate("Salpidae")
+```
+
+    ## 
+    Retrieved 2000 records of 20844 (9%)
+    Retrieved 4000 records of 20844 (19%)
+    Retrieved 6000 records of 20844 (28%)
+    Retrieved 8000 records of 20844 (38%)
+    Retrieved 10000 records of 20844 (47%)
+    Retrieved 12000 records of 20844 (57%)
+    Retrieved 14000 records of 20844 (67%)
+    Retrieved 16000 records of 20844 (76%)
+    Retrieved 18000 records of 20844 (86%)
+    Retrieved 20000 records of 20844 (95%)
+    Retrieved 20844 records of 20844 (100%)
+
+    ## [1] 0.7779217
 
 Visualization
 -------------

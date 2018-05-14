@@ -178,25 +178,31 @@ ids <- get_wormsid(c("Actinostola crassicornis", "Actinostola", 'Actinostola geo
 biotaxa is a tool for the exploration and visualization of taxa discovery.
 
 To install the package, 
-```{r, echo = TRUE, eval = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 devtools::install_github("hhsieh/biotaxa_Rpackage")
 library(biotaxa)
 ```
 To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
 ```{r, echo = TRUE}
+library(biotaxa)
 head(data_m)
 ```
-To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`. 
+To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`</br> 
 ```{r}
-#taxaaccum("Animalia", "Genus")
+taxaaccum("Animalia", "Genus")
 ```
-To list and rank all of the genera belonging to Family 'Salpidae'
+
+`frequencyrank()` lists and ranks all of the lower taxa of a higher taxa by frequency.</br>
+```{r, echo = TRUE, eval = TRUE}
 fc <- frequencyrank("Salpidae", "Genus")
 fc <- fc[fc$Genus != "", ]
-#fc
+fc
+```
 
-
-
+`OBIS_imprecisionrate()` finds out the proportion of taxa occurrences on OBIS unidentified to species levels. </br>
+```{r}
+OBIS_imprecisionrate("Salpidae")
+```
 
 
 ## Visualization
