@@ -83,18 +83,40 @@ Or download the development versions from GitHub
 basic commands:
 
 ``` r
-filer() picks cases based on their values
-mutate() adds new variables that are functions of existing variables
-select() picks variables based on their names
-arrange() changes the ordering of the rows
-group_by() groups cases based on their values
+filer() 
+mutate() 
+select() 
+arrange() 
+group_by() 
 ```
 
-### rrefine
+basic uses of these commands:
 
-OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> allows users to programmatically triger data transfer between R and 'OpenRefine'.
+``` r
+library(robis)
+library(dplyr)
 
-### obistools
+data <- occurrence("Actinauge verrillii")
+
+#picks cases based on selected values
+data %>% 
+  filter(decimalLongitude < -60)
+
+#picks variables based on their names and leave out unwanted values
+data %>%
+  filter(decimalLongitude < -60) %>%
+  select(decimalLongitude, decimalLatitude)
+```
+
+**rrefine**</br> OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> allows users to programmatically triger data transfer between R and 'OpenRefine'.
+
+``` r
+library(rrefine)
+```
+
+`refine_upload()` uploades data to *OpeRefine* from R</br> `refine_export()` exports data to R from *OpenRefine*</br> `refine_delete()` deletes *OpenRefine* project</br>
+
+**obistools**</br>
 
 Taxonomy Tools
 --------------
