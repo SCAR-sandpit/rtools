@@ -353,6 +353,23 @@ head(props2)
 ```
 
 We can than visualize the distributions of the organisms in the dataset. </br>
+We first try **[leaflet](https://rstudio.github.io/leaflet/)**.</br>
+
+```{r, echo = TRUE, eval = FALSE}
+library(leaflet)
+
+occurrence <- occurrence[is.na(occurrence$decimalLatitude) == FALSE, ]
+occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE,]
+lats <- occurrence$decimalLatitude
+lons <- occurrence$decimalLongitude
+
+m <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = lons, lat = lats)
+m
+```
+
+We can select part of the occurrences and project them differently.
 
 ```{r, echo = TRUE, eval = FALSE}
 LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")

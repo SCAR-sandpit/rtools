@@ -353,16 +353,32 @@ First, we write a function to retrieve all of the occurrence data of the 10 taxo
       } else {
         return(c(prop_antarctic = NA, prop_subantarctic = NA, prop_south_temperate = NA, prop_tropical = NA, prop_north_temperate = NA, prop_arctic = NA))
       }
-
     }
 
 collect the first 10 taxon keys in the dataset</br>
 
     taxonKeys <- occurrence$taxonKey[1:10] 
+    props <- lapply(taxonKeys, whereGet)
     props2 <- do.call(rbind, props)
     head(props2)
 
-We can than visualize the distributions of the organisms in the dataset. </br>
+We can than visualize the distributions of the organisms in the dataset. </br> We first try **[leaflet](https://rstudio.github.io/leaflet/)**.</br>
+
+``` r
+library(leaflet)
+
+occurrence <- occurrence[is.na(occurrence$decimalLatitude) == FALSE, ]
+occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE,]
+lats <- occurrence$decimalLatitude
+lons <- occurrence$decimalLongitude
+
+m <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = lons, lat = lats)
+m
+```
+
+We can select part of the occurrences and project them differently.
 
 ``` r
 LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
