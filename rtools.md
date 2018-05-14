@@ -108,7 +108,7 @@ data %>%
   select(decimalLongitude, decimalLatitude)
 ```
 
-**rrefine**</br> OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> allows users to programmatically triger data transfer between R and 'OpenRefine'.
+**- rrefine -**</br> OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> is a R package that allows users to programmatically triger data transfer between R and 'OpenRefine'.
 
 ``` r
 library(rrefine)
@@ -116,16 +116,34 @@ library(rrefine)
 
 `refine_upload()` uploades data to *OpeRefine* from R</br> `refine_export()` exports data to R from *OpenRefine*</br> `refine_delete()` deletes *OpenRefine* project</br>
 
-**obistools**</br>
+**- obistools -**</br> obistools provides a set of functions for data enhancement and quality control. For instance,
+
+`match_taxa()` performs interactive taxon matching with the World Register of Marine Species.
+
+``` r
+library(obistools)
+names <- c("Actinostola crassicornis", "Actinostola", "Actinostola georgiana")
+match_taxa(names)
+```
+
+`check_onland()` uses the xylookup web service which internally uses land polygons from OpenStreetMap to check if any points are located on land. Other shapefiles can be used as well.</br>
+
+`check_fields()` checks if all OBIS required fields are present in an occurrence table and if any values are missing. This is especially useful for users who would like to contribute their data to the OBIS data portal.
+
+More functions can be found on \[obis github\]<https://github.com/iobis/obistools></br>
 
 Taxonomy Tools
 --------------
 
-### taxasize
+**taxize**</br> taxize is capable of collecting different taxonomic data sources online, including NCBI, ITIS, GBIF, EOL, IUCN and more. For instance,
 
-### biotaxa
+`get_wormsid` gets WORMS identifiers.
 
-biotaxa is a tool for the exploration and visualization of taxa discovery.
+``` r
+ids <- get_wormsid(c("Actinostola crassicornis", "Actinostola", 'Actinostola georgiana'))
+```
+
+**biotaxa**</br> biotaxa is a tool for the exploration and visualization of taxa discovery.
 
 To install the package,
 
@@ -137,8 +155,23 @@ library(biotaxa)
 To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
 
 ``` r
-#head(data_m)
+head(data_m)
 ```
+
+    ##   AphiaIDs  Kingdoms      Phyla           Classes       Orders
+    ## 1   610727 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 2   149387 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 3   677605 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 4   160618 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 5   661772 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ## 6   160622 Chromista Ochrophyta Bacillariophyceae Achnanthales
+    ##        Families     Genera year
+    ## 1 Achnanthaceae Achnanthes 1996
+    ## 2 Achnanthaceae Achnanthes 1824
+    ## 3 Achnanthaceae Achnanthes 1965
+    ## 4 Achnanthaceae Achnanthes 1895
+    ## 5 Achnanthaceae Achnanthes 1963
+    ## 6 Achnanthaceae Achnanthes 1880
 
 To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`.
 
