@@ -8,7 +8,7 @@ output: github_document
 
 [The Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/), [the Ocean Biogeographic Information System (OBIS)](http://www.iobis.org/) and <a href = "http://biodiversity.aq">ANTABIF</a> all provide species occurrence data. As the GBIF harbors occurrences of both terrestrial and marine species at the globa scale, the OBIS is the most comprehensive source of marine species occurrences and ANTABIF aims to establish as an authority of biodiversity data for Antarctica and the Southern Ocean.
 
-The construction of the ANTABIF API is an ongoing project. This page presents occurrence retrievals, analyses and visualizations of GBIF and OBIS data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
+The construction of the ANTABIF API is an ongoing project. This page presents the retrieval, analysis and visualization of GBIF and OBIS occurrence data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
 
 ### GBIF
 <a href = "https://ropensci.org/tutorials/rgbif_tutorial/">rgbif</a> helps users to retrieve data from the GBIF. 
@@ -83,7 +83,7 @@ OpenRefine is an open source data cleaning software. <a href = "http://openrefin
 biotaxa is a tool for the exploration and visualization of taxa discovery.
 
 To install the package, 
-```{r}
+```{r, echo = FALSE}
 devtools::install_github("hhsieh/biotaxa_Rpackage")
 library(biotaxa)
 ```
@@ -91,6 +91,17 @@ To user `biotaxa`, the dataset should contain two columns of taxa classification
 ```{r}
 head(data_m)
 ```
+To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`. 
+```{r}
+taxaaccum("Animalia", "Genus")
+```
+To list and rank all of the genera belonging to Family 'Salpidae'
+fc <- frequencyrank("Salpidae", "Genus")
+fc <- fc[fc$Genus != "", ]
+fc
+
+
+
 
 
 ## Visualization
@@ -111,7 +122,7 @@ g <- an_read()
 ## find single name per feature, preferring United Kingdom
 ##  names where available, and only rows with valid locations
 temp <- g %>% an_preferred("United Kingdom")
-temp <- temp[!is.na(temp$longitude) & !is.na(temp$latitude),]
+temp <- fc <- na.omit(fc)temp[!is.na(temp$longitude) & !is.na(temp$latitude),]
 
 ## replace NAs with empty strings in narrative
 temp$narrative[is.na(temp$narrative)] <- ""

@@ -80,10 +80,6 @@ biotaxa is a tool for the exploration and visualization of taxa discovery.
 
 To install the package,
 
-``` r
-devtools::install_github("hhsieh/biotaxa_Rpackage")
-```
-
     ## Downloading GitHub repo hhsieh/biotaxa_Rpackage@master
     ## from URL https://api.github.com/repos/hhsieh/biotaxa_Rpackage/zipball/master
 
@@ -94,14 +90,14 @@ devtools::install_github("hhsieh/biotaxa_Rpackage")
 
     ## Installing ggplot2
 
-    ## Downloading GitHub repo jimhester/withr@master
-    ## from URL https://api.github.com/repos/jimhester/withr/zipball/master
+    ## Downloading GitHub repo r-lib/rlang@master
+    ## from URL https://api.github.com/repos/r-lib/rlang/zipball/master
 
-    ## Installing withr
+    ## Installing rlang
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe45997eb7/r-lib-withr-79d7b0d'  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e913c64203/r-lib-rlang-ccdbd8b'  \
     ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
 
     ## 
@@ -113,26 +109,26 @@ devtools::install_github("hhsieh/biotaxa_Rpackage")
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe9a75b98/hadley-scales-d767915'  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e9567e0a33/hadley-scales-d767915'  \
     ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
 
     ## 
 
-    ## Downloading GitHub repo r-lib/rlang@master
-    ## from URL https://api.github.com/repos/r-lib/rlang/zipball/master
+    ## Downloading GitHub repo jimhester/withr@master
+    ## from URL https://api.github.com/repos/jimhester/withr/zipball/master
 
-    ## Installing rlang
+    ## Installing withr
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe215a22d8/r-lib-rlang-b197278'  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e92b808de0/r-lib-withr-79d7b0d'  \
     ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
 
     ## 
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe2bfd985a/tidyverse-ggplot2-d3bd92e'  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e966990c09/tidyverse-ggplot2-4463da6'  \
     ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
 
     ## 
@@ -144,21 +140,17 @@ devtools::install_github("hhsieh/biotaxa_Rpackage")
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe4874a99a/iobis-robis-8a47f66'  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e94b4999d1/iobis-robis-8a47f66'  \
     ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
 
     ## 
 
     ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
     ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/RtmpF9n7X5/devtools15fe2de4d31d/hhsieh-biotaxa_Rpackage-e484150'  \
+    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e918c15c70/hhsieh-biotaxa_Rpackage-e484150'  \
     ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
 
     ## 
-
-``` r
-library(biotaxa)
-```
 
 To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
 
@@ -181,6 +173,14 @@ head(data_m)
     ## 5 Achnanthaceae Achnanthes 1963
     ## 6 Achnanthaceae Achnanthes 1880
 
+To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`.
+
+``` r
+taxaaccum("Animalia", "Genus")
+```
+
+![](rtools_files/figure-markdown_github/unnamed-chunk-3-1.png) To list and rank all of the genera belonging to Family 'Salpidae' fc &lt;- frequencyrank("Salpidae", "Genus") fc &lt;- fc\[fc$Genus != "", \] fc
+
 Visualization
 -------------
 
@@ -199,7 +199,7 @@ To run the piece of code, first install the leaflet package of the rstudio versi
     ## find single name per feature, preferring United Kingdom
     ##  names where available, and only rows with valid locations
     temp <- g %>% an_preferred("United Kingdom")
-    temp <- temp[!is.na(temp$longitude) & !is.na(temp$latitude),]
+    temp <- fc <- na.omit(fc)temp[!is.na(temp$longitude) & !is.na(temp$latitude),]
 
     ## replace NAs with empty strings in narrative
     temp$narrative[is.na(temp$narrative)] <- ""
