@@ -80,6 +80,16 @@ Or download the development versions from GitHub
     devtools::install_github("tidyverse/tidyr")
     devtools::install_github("tidyverse/dplyr")
 
+basic commands:
+
+``` r
+filer() picks cases based on their values
+mutate() adds new variables that are functions of existing variables
+select() picks variables based on their names
+arrange() changes the ordering of the rows
+group_by() groups cases based on their values
+```
+
 ### rrefine
 
 OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> allows users to programmatically triger data transfer between R and 'OpenRefine'.
