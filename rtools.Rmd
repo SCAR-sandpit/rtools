@@ -204,6 +204,20 @@ fc
 OBIS_imprecisionrate("Salpidae")
 ```
 
+`alltaxalist()` lists all taxa and their ranks (from Kingdom to Genus) in a dataset</br>
+```{r}
+taxa_list <- alltaxalist(data_m)
+no_rows <- nrow(taxa_list) 
+no_rows
+```
+
+`taxamodel()` fits the taxonomic accumulation of a given taxa with user-selected logistic, Michaelis-Menten, or asymtopic regression model.</br>
+
+```{r, echo = TRUE}
+taxamodel(taxa = "Animalia", rank = "Genus", method = "logistic")
+```
+
+More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>
 
 ## Visualization
 The [Github page of Australian Antarctic Data Center](https://github.com/AustralianAntarcticDataCentre/antanym-demo) hosts nice source code for polar stereographic projection.

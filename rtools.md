@@ -218,6 +218,26 @@ OBIS_imprecisionrate("Salpidae")
 
     ## [1] 0.7779217
 
+`alltaxalist()` lists all taxa and their ranks (from Kingdom to Genus) in a dataset</br>
+
+``` r
+taxa_list <- alltaxalist(data_m)
+no_rows <- nrow(taxa_list) 
+no_rows
+```
+
+    ## [1] 11109
+
+`taxamodel()` fits the taxonomic accumulation of a given taxa with user-selected logistic, Michaelis-Menten, or asymtopic regression model.</br>
+
+``` r
+taxamodel(taxa = "Animalia", rank = "Genus", method = "logistic")
+```
+
+![](rtools_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
+More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>
+
 Visualization
 -------------
 
