@@ -2,52 +2,69 @@ RTools for Antarctica and the Southern Ocean Biodiversity
 ================
 Hsun-Yi Hsieh
 
+
+
+
+
 Occurrence data retrieval
 -------------------------
 
 [The Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/), [the Ocean Biogeographic Information System (OBIS)](http://www.iobis.org/) and <a href = "http://biodiversity.aq">ANTABIF</a> all provide species occurrence data. As the GBIF harbors occurrences of both terrestrial and marine species at the globa scale, the OBIS is the most comprehensive source of marine species occurrences and ANTABIF aims to establish as an authority of biodiversity data for Antarctica and the Southern Ocean.
 
-The construction of the ANTABIF API is an ongoing project. This page presents occurrence retrievals, analyses and visualizations of GBIF and OBIS data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
+The construction of the ANTABIF API is an ongoing project. This page presents the retrieval, analysis and visualization of GBIF and OBIS occurrence data. The following sections will provide a basic workflow for data cleaning, wrangling, analysis and visualisation in R.
 
-### GBIF
+**GBIF**</br>
 
-<a href = "https://ropensci.org/tutorials/rgbif_tutorial/">rgbif</a> helps users to retrieve data from the GBIF.
+<a href = "https://ropensci.org/tutorials/rgbif_tutorial/">rgbif</a> helps users retrieve data from the GBIF.
 
-    occ_search() is a function for searching GBIF occurrence data.
+Some basic commends are:
 
-    #search by scientificName.
-    occ_search(scientificName = 'Ursus americanus', limit = 0, return = "meta")
+    occ_search()
+    occ_download()
+    occ_download_get()
+    occ_get()
 
-    #search by dataset key.
-    occ_search(datasetKey='7b5d6a48-f762-11e1-a439-00145eb45e9a', return='data', limit=20)
+Basic uses of these commands:
 
-    # Search on latitidue and longitude
-    occ_search(search="kingfisher", decimalLatitude=50, decimalLongitude=-10)
+``` r
+#search by scientificName.
+occ_search(scientificName = 'Ursus americanus', limit = 20, return = "meta")
+
+#search by dataset key.
+occ_search(datasetKey='7b5d6a48-f762-11e1-a439-00145eb45e9a', return='data', limit=20)
+
+#search on latitidue and longitude
+occ_search(search="kingfisher", decimalLatitude=50, decimalLongitude=-10)
+
+#get data for specific GBIF occurrences.
+occ_get(key=855998194, return='data')
+```
 
 Alternatively, users can download data directly from GBIF. For instance, [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) harbors more than 50,000 occurrences of over 40,000 plant specimens from Antarctica, the sub-Antarctic islands and surrounding continents.
 
-Users can also download and import the data directly in one step as follows.
+Or, download and import the data by takig one step as follows.
 
     dd_gbif <- occ_download_get(key = "0000066-140928181241064", overwrite = TRUE) %>% 
         occ_download_import(dd_gbif_download, na.strings = c("", NA))
 
-### OBIS
+**OBIS**</br> <a href = "https://github.com/iobis/robis">robis</a> helps users retrieve data from the OBIS.
 
-<a href = "https://github.com/iobis/robis">robis</a> helps users to retrieve data from the OBIS.
+``` r
+occurrence("Actinauge verrillii")
+```
 
-    install.packages("rgbif")
-    library("rgbif")
-    occ_get(key=c(101010, 240713150, 855998194), return='data')
-    occ_get(key=c(855998194, 620594291, 766420684),
-       fields=c('scientificName', 'decimalLatitude', 'basisOfRecord'),
-       verbatim=TRUE)
+``` r
+#restrict fields in result set
+data <- occurrence("Actinauge verrillii", fields = c("decimalLongitude", "decimalLatitude"))
+
+#Get occurrences by geometry
+data <- occurrence("Actinauge verrillii", geometry = "POLYGON ((54.60 51.16772, 2.62436 51.14059, 2.76066 51.19225, 2.73216 51.20946, 54.60 51.16772))")
+```
 
 Data browsing, cleaning wrangling
 ---------------------------------
 
-### tidyverse
-
-The <a href = "https://www.tidyverse.org/packages/"> **tidyverse**</a> is a collection of R packages designed for data science. The collection includes <a href = "http://dplyr.tidyverse.org/">**dplyr**</a> for data frame creation and manipulation, <a href = "http://readr.tidyverse.org/">**readr**</a> and <a href = "http://readxl.tidyverse.org/">**readxl**</a> for reading data from text or EXCEL files, <a href = "http://purrr.tidyverse.org/">**purrr**</a> for speeding up functional prorgramminga and <a href = "http://ggplot2.tidyverse.org/">**ggplot2**</a> for visualization.
+**- tidyverse -**</br> The <a href = "https://www.tidyverse.org/packages/"> **tidyverse**</a> is a collection of R packages designed for data science. The collection includes <a href = "http://dplyr.tidyverse.org/">**dplyr**</a> for data frame creation and manipulation, <a href = "http://readr.tidyverse.org/">**readr**</a> and <a href = "http://readxl.tidyverse.org/">**readxl**</a> for reading data from text or EXCEL files, <a href = "http://purrr.tidyverse.org/">**purrr**</a> for speeding up functional prorgramminga and <a href = "http://ggplot2.tidyverse.org/">**ggplot2**</a> for visualization.
 
 Users can install all the packages in the tidyverse by running
 
@@ -80,106 +97,24 @@ biotaxa is a tool for the exploration and visualization of taxa discovery.
 
 To install the package,
 
-    ## Downloading GitHub repo hhsieh/biotaxa_Rpackage@master
-    ## from URL https://api.github.com/repos/hhsieh/biotaxa_Rpackage/zipball/master
-
-    ## Installing biotaxa
-
-    ## Downloading GitHub repo tidyverse/ggplot2@master
-    ## from URL https://api.github.com/repos/tidyverse/ggplot2/zipball/master
-
-    ## Installing ggplot2
-
-    ## Downloading GitHub repo r-lib/rlang@master
-    ## from URL https://api.github.com/repos/r-lib/rlang/zipball/master
-
-    ## Installing rlang
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e913c64203/r-lib-rlang-ccdbd8b'  \
-    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
-
-    ## 
-
-    ## Downloading GitHub repo hadley/scales@master
-    ## from URL https://api.github.com/repos/hadley/scales/zipball/master
-
-    ## Installing scales
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e9567e0a33/hadley-scales-d767915'  \
-    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
-
-    ## 
-
-    ## Downloading GitHub repo jimhester/withr@master
-    ## from URL https://api.github.com/repos/jimhester/withr/zipball/master
-
-    ## Installing withr
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e92b808de0/r-lib-withr-79d7b0d'  \
-    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
-
-    ## 
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e966990c09/tidyverse-ggplot2-4463da6'  \
-    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
-
-    ## 
-
-    ## Downloading GitHub repo iobis/robis@master
-    ## from URL https://api.github.com/repos/iobis/robis/zipball/master
-
-    ## Installing robis
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e94b4999d1/iobis-robis-8a47f66'  \
-    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
-
-    ## 
-
-    ## '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
-    ##   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-    ##   '/private/var/folders/vt/zx32p8hn04v4zjrp82htkr5m0000gn/T/Rtmp2UKJ7A/devtools9e918c15c70/hhsieh-biotaxa_Rpackage-e484150'  \
-    ##   --library='/Users/hhsieh/Library/R/3.4/library' --install-tests
-
-    ## 
+``` r
+devtools::install_github("hhsieh/biotaxa_Rpackage")
+library(biotaxa)
+```
 
 To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
 
 ``` r
-head(data_m)
+#head(data_m)
 ```
-
-    ##   AphiaIDs  Kingdoms      Phyla           Classes       Orders
-    ## 1   610727 Chromista Ochrophyta Bacillariophyceae Achnanthales
-    ## 2   149387 Chromista Ochrophyta Bacillariophyceae Achnanthales
-    ## 3   677605 Chromista Ochrophyta Bacillariophyceae Achnanthales
-    ## 4   160618 Chromista Ochrophyta Bacillariophyceae Achnanthales
-    ## 5   661772 Chromista Ochrophyta Bacillariophyceae Achnanthales
-    ## 6   160622 Chromista Ochrophyta Bacillariophyceae Achnanthales
-    ##        Families     Genera year
-    ## 1 Achnanthaceae Achnanthes 1996
-    ## 2 Achnanthaceae Achnanthes 1824
-    ## 3 Achnanthaceae Achnanthes 1965
-    ## 4 Achnanthaceae Achnanthes 1895
-    ## 5 Achnanthaceae Achnanthes 1963
-    ## 6 Achnanthaceae Achnanthes 1880
 
 To visualize the accmulation curve of all genera belonging to Animalia, use `taxaaccum()`.
 
 ``` r
-taxaaccum("Animalia", "Genus")
+#taxaaccum("Animalia", "Genus")
 ```
 
-![](rtools_files/figure-markdown_github/unnamed-chunk-3-1.png) To list and rank all of the genera belonging to Family 'Salpidae' fc &lt;- frequencyrank("Salpidae", "Genus") fc &lt;- fc\[fc$Genus != "", \] fc
+To list and rank all of the genera belonging to Family 'Salpidae' fc &lt;- frequencyrank("Salpidae", "Genus") fc &lt;- fc\[fc$Genus != "", \] \#fc
 
 Visualization
 -------------
