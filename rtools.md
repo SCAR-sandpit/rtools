@@ -301,7 +301,7 @@ To run the piece of code, first install the leaflet package of the rstudio versi
 Workflow demonstration
 ----------------------
 
-This exmple demonstrates a simple workflow of applying the basic RTools for data retrieval, cleaning, analysis and visulisation.
+This section demonstrates a simple workflow of applying the basic RTools for data retrieval, cleaning, analysis and visulisation.
 
     install.packages(c("rgbif", "tidyverse", "sp", "raster"))
     library(rgbif)
@@ -310,18 +310,24 @@ This exmple demonstrates a simple workflow of applying the basic RTools for data
     library(mapr)
     library(raster)
 
-Here we use [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) as an example. After downloading the entire dataset from the GBIF, we can start exploring it for a bit. We aim to understand how each species in this dataset distributes in the interested region (Antarctica and sub-Antarctica) and across the globe.
+Here we use [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) as an example. After downloading the entire dataset from the GBIF, we can start exploring it for a bit. We aim to understand how each species in this dataset distributes in the interested region (Antarctica and sub-Antarctica) and across the globe.</br>
 
-    setwd("") #set working directory to where the dataset is saved
+    #set working directory to where the dataset is saved
+    setwd("") 
+
+    #read in the dataset
     occurrence <- read.table("occurrence.txt", header = T, sep = "\t", fill = TRUE, quote = "")
+
     #get an overview of the dataset
     head(occurrence)
+
     #find the dimension of the dataset
     dim(occurrence) #Here it shows there are 52,181 occurrences
+
     #find how many unique taxon keys there are in the dataset. 
     length(unique(occurrence$taxonKey)) #there are 2,653 unique taxon keys
 
-We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ\_search() and compute their regional distributions in Antarctica (60-90**<sup>∘</sup>S), subantarctica (45-60**<sup>∘</sup>S), south temperate (30-45**<sup>∘</sup>S), tropics (30**<sup>∘</sup>N-30**<sup>∘</sup>S), north temperate (30-60**<sup>∘</sup>N) and the arctic (60-90**<sup>∘</sup>N).
+We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ\_search() and compute their regional distributions in Antarctica (60-90**<sup>∘</sup>S), subantarctica (45-60**<sup>∘</sup>S), south temperate (30-45**<sup>∘</sup>S), tropics (30**<sup>∘</sup>N-30**<sup>∘</sup>S), north temperate (30-60**<sup>∘</sup>N) and the arctic (60-90**<sup>∘</sup>N).</br>
 
 First, we write a function to retrieve all of the occurrence data of the 10 taxon keys via using occ\_search() and compute their regional distributions
 
@@ -350,37 +356,23 @@ First, we write a function to retrieve all of the occurrence data of the 10 taxo
 
     }
 
-collect the first taxon keys in the dataset
+collect the first 10 taxon keys in the dataset</br>
 
     taxonKeys <- occurrence$taxonKey[1:10] 
     props2 <- do.call(rbind, props)
     head(props2)
 
-    First, retrieve the occurrence data of krills within the given geometric range. In this example, we set up a limit of 5000 occurrences. This may take a while.
-    occ_Actinia <- occ_search(scientificName = "Actinia", return = "data", limit = 5000, hasCoordinate = T)
-    occ_Actinia <- data.frame(occ_Actinia)
-    #have a view of the data columns
-    colnames(occ_Actinia)
+We can than visualize the distributions of the organisms in the dataset. </br>
 
-    #You can save the dataset in your favoriate directory.
-    write.csv(occ_Actinia, ".../occ_Actinia.csv", row.names = FALSE)
-
-    #LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
-    map_leaflet(occ_krills, "decimalLongitude", "decimalLatitude", size=1, color="blue")
-    xy <- occ_krills[c("decimalLongitude","decimalLatitude")]
-    #download an environmental layer
-    env <- getData('worldclim', var='bio', res=10) 
-    title(main = bquote(italic(.("Euphausia superba")) ~occurrences~on~Annual~mean~temperature~'(dCx10)'))
-    points(xy, col='blue', pch=20)
-
-    plot(env, 1, main=NULL, axes=FALSE)
-
-the use of R package antanym
-
-    library(antanym)
-    my_longitude <- c(-180, -120)
-    my_latitude <- c(-90, -60)
-    this_names <- an_filter(g, extent = c(my_longitude, my_latitude))
+``` r
+LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
+map_leaflet(occ_krills, "decimalLongitude", "decimalLatitude", size=1, color="blue")
+xy <- occ_krills[c("decimalLongitude","decimalLatitude")]
+#download an environmental layer
+env <- getData('worldclim', var='bio', res=10) 
+title(main = bquote(italic(.("Euphausia superba")) ~occurrences~on~Annual~mean~temperature~'(dCx10)'))
+points(xy, col='blue', pch=20)
+```
 
 ropensci
 --------
