@@ -2,9 +2,6 @@
 title: "RTools for Antarctica and the Southern Ocean Biodiversity"
 author: "Hsun-Yi Hsieh"
 output: github_document
-header-includes:
-  - \usepackage{xcolor}
-  - \usepackage{framed}
 ---
 
 ## Occurrence data retrieval

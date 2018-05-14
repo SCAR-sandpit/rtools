@@ -2,10 +2,6 @@ RTools for Antarctica and the Southern Ocean Biodiversity
 ================
 Hsun-Yi Hsieh
 
-
-
-
-
 Occurrence data retrieval
 -------------------------
 
