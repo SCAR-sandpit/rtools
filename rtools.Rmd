@@ -356,15 +356,24 @@ We first try **[leaflet](https://rstudio.github.io/leaflet/)**.</br>
 library(leaflet)
 
 occurrence <- occurrence[is.na(occurrence$decimalLatitude) == FALSE, ]
-occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE,]
+occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE, ]
+occurrence <- occurrence[is.na(occurrence$scientificName) == FALSE, ]
 lats <- occurrence$decimalLatitude
 lons <- occurrence$decimalLongitude
+scientificNames <- occurrence$scientificName
 
 #visualize the first 10 occurrences
 m <- leaflet() %>%
   addTiles() %>%
   addCircleMarkers(lng = lons[1:10], lat = lats[1:10])
 m
+
+#also can add labels for the occurrences
+n <- leaflet() %>% addTiles() %>%
+  addPopups(lons[1:10], lats[1:10], scientificNames[1:10],
+    options = popupOptions(closeButton = FALSE)
+  )
+n
 ```
 
 
