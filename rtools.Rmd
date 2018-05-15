@@ -296,7 +296,7 @@ Here we use [Antarctic Plant Database]("https://www.gbif.org/dataset/82d9ff5c-f7
 
 ```
 #set working directory to where the dataset is saved
-setwd("") 
+setwd("path") 
 
 #read in the dataset
 occurrence <- read.table("occurrence.txt", header = T, sep = "\t", fill = TRUE, quote = "")
@@ -360,11 +360,15 @@ occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE,]
 lats <- occurrence$decimalLatitude
 lons <- occurrence$decimalLongitude
 
+#visualize the first 10 occurrences
 m <- leaflet() %>%
   addTiles() %>%
-  addMarkers(lng = lons, lat = lats)
+  addCircleMarkers(lng = lons[1:10], lat = lats[1:10])
 m
 ```
+
+
+
 
 We can select part of the occurrences and project them differently.
 
