@@ -104,7 +104,7 @@ data %>%
   select(decimalLongitude, decimalLatitude)
 ```
 
-**- rrefine -**</br> OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> is a R package that allows users to programmatically triger data transfer between R and 'OpenRefine'.
+**- rrefine -**</br> OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> is a R package that allows users to programmatically triger data transfer between R and *OpenRefine*.
 
 ``` r
 library(rrefine)
@@ -122,18 +122,18 @@ names <- c("Actinostola crassicornis", "Actinostola", "Actinostola georgiana")
 match_taxa(names)
 ```
 
-`check_onland()` uses the xylookup web service which internally uses land polygons from OpenStreetMap to check if any points are located on land. Other shapefiles can be used as well.</br>
+`check_onland()` uses the xylookup web service which internally uses land polygons from *OpenStreetMap* to check if any points are located on land. Other shapefiles can be used as well.</br>
 
 `check_fields()` checks if all OBIS required fields are present in an occurrence table and if any values are missing. This is especially useful for users who would like to contribute their data to the OBIS data portal.
 
-More functions can be found on \[obis github\]<https://github.com/iobis/obistools></br>
+More functions can be found on \[obistools\]&lt;"<https://github.com/iobis/obistools>"&gt;</br>
 
 Taxonomy Tools
 --------------
 
 **- taxize -**</br> [taxize](https://ropensci.org/tutorials/taxize_tutorial/) is capable of collecting different taxonomic data sources online, including NCBI, ITIS, GBIF, EOL, IUCN and more. For instance,
 
-`get_wormsid` gets WORMS identifiers.
+`get_wormsid()` gets WORMS identifiers.
 
 ``` r
 ids <- get_wormsid(c("Actinostola crassicornis", "Actinostola", 'Actinostola georgiana'))
@@ -148,7 +148,7 @@ devtools::install_github("hhsieh/biotaxa_Rpackage")
 library(biotaxa)
 ```
 
-To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
+A`biotaxa` dataset should contain at least two columns of taxa classifications - *kingdom*, *phylum*, *class*, *order*, *family*, *genus*, and *species* or *AphiaID*, as well as *year*, which denotes taxa discovery year. Take a look of the example dataset,
 
 ``` r
 library(biotaxa)
@@ -239,7 +239,7 @@ Visualization
 
 The [Github page of Australian Antarctic Data Center](https://github.com/AustralianAntarcticDataCentre/antanym-demo) hosts nice source code for polar stereographic projection.
 
-To run the piece of code, first install the leaflet package of the rstudio version.
+To test the code, first install the leaflet package of the rstudio version.
 
     devtools::install_github("rstudio/leaflet")
     library(leaflet)
@@ -309,7 +309,7 @@ This section demonstrates a simple workflow of applying the basic RTools for dat
 Here we use [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) as an example. After downloading the entire dataset from the GBIF, we can start exploring it for a bit. We aim to understand how each species in this dataset distributes in the interested region (Antarctica and sub-Antarctica) and across the globe.</br>
 
     #set working directory to where the dataset is saved
-    setwd("") 
+    setwd("path") 
 
     #read in the dataset
     occurrence <- read.table("occurrence.txt", header = T, sep = "\t", fill = TRUE, quote = "")
@@ -364,14 +364,35 @@ We can than visualize the distributions of the organisms in the dataset. </br> W
 library(leaflet)
 
 occurrence <- occurrence[is.na(occurrence$decimalLatitude) == FALSE, ]
-occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE,]
+occurrence <- occurrence[is.na(occurrence$decimalLongitude) == FALSE, ]
+occurrence <- occurrence[is.na(occurrence$scientificName) == FALSE, ]
 lats <- occurrence$decimalLatitude
 lons <- occurrence$decimalLongitude
+species <- occurrence$species
 
+#visualize the first 10 occurrences
 m <- leaflet() %>%
   addTiles() %>%
-  addMarkers(lng = lons, lat = lats)
+  addCircleMarkers(lng = lons[1:10], lat = lats[1:10])
 m
+
+#also can add labels for the occurrences
+n <- leaflet() %>% addTiles() %>%
+  addPopups(lons[1:10], lats[1:10], species[1:10],
+    options = popupOptions(closeButton = TRUE)
+  )
+n
+```
+
+say, we would like to visualize the distribution of only one species, *Triandrophyllum subtrifidum*, in the dataset.
+
+``` r
+library(dplyr)
+Ts <- occurrence %>% filter(species == "Triandrophyllum subtrifidum") %>% select(decimalLongitude, decimalLatitude) 
+
+lons = Ts$decimalLongitude
+lats = Ts$decimalLatitude
+leaflet(Ts) %>% addTiles() %>% addCircleMarkers(lng = lons, lat = lats, weight = 0.2)
 ```
 
 We can select part of the occurrences and project them differently.
