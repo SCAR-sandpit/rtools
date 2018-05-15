@@ -130,7 +130,7 @@ data %>%
 ```
 
 **- rrefine -**</br>
-OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> is a R package that allows users to programmatically triger data transfer between R and 'OpenRefine'. 
+OpenRefine is an open source data cleaning software. <a href = "http://openrefine.org/">rrefine</a> is a R package that allows users to programmatically triger data transfer between R and *OpenRefine*. 
 
 ```{r, ecol = TRUE, eval = TRUE}
 library(rrefine)
@@ -154,18 +154,18 @@ library(obistools)
 names <- c("Actinostola crassicornis", "Actinostola", "Actinostola georgiana")
 match_taxa(names)
 ```
-`check_onland()` uses the xylookup web service which internally uses land polygons from OpenStreetMap to check if any points are located on land. Other shapefiles can be used as well.</br>
+`check_onland()` uses the xylookup web service which internally uses land polygons from *OpenStreetMap* to check if any points are located on land. Other shapefiles can be used as well.</br>
 
 `check_fields()` checks if all OBIS required fields are present in an occurrence table and if any values are missing. This is especially useful for users who would like to contribute their data to the OBIS data portal.
 
-More functions can be found on [obis github]<https://github.com/iobis/obistools></br>
+More functions can be found on [obistools]<"https://github.com/iobis/obistools"></br>
 
 ## Taxonomy Tools 
 
 **- taxize -**</br>
 [taxize](https://ropensci.org/tutorials/taxize_tutorial/) is capable of collecting different taxonomic data sources online, including NCBI, ITIS, GBIF, EOL, IUCN and more. For instance,
 
-`get_wormsid` gets WORMS identifiers.
+`get_wormsid()` gets WORMS identifiers.
 
 ```{r, echo = TRUE, eval = FALSE}
 ids <- get_wormsid(c("Actinostola crassicornis", "Actinostola", 'Actinostola georgiana'))
@@ -179,7 +179,7 @@ To install the package,
 devtools::install_github("hhsieh/biotaxa_Rpackage")
 library(biotaxa)
 ```
-To user `biotaxa`, the dataset should contain two columns of taxa classifications (e.g. kingdom, phylum, class, order, family, genus, species or AphiaID) and taxa discovery year. Take a look of the example dataset,
+A`biotaxa` dataset should contain at least two columns of taxa classifications - *kingdom*, *phylum*, *class*, *order*, *family*, *genus*, and *species* or *AphiaID*, as well as *year*, which denotes taxa discovery year. Take a look of the example dataset,
 ```{r, echo = TRUE}
 library(biotaxa)
 head(data_m)
@@ -219,7 +219,7 @@ More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>
 ## Visualization
 The [Github page of Australian Antarctic Data Center](https://github.com/AustralianAntarcticDataCentre/antanym-demo) hosts nice source code for polar stereographic projection.
 
-To run the piece of code, first install the leaflet package of the rstudio version.
+To test the code, first install the leaflet package of the rstudio version.
 ```
 devtools::install_github("rstudio/leaflet")
 library(leaflet)
