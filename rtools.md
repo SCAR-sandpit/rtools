@@ -403,6 +403,8 @@ Here we select occurrence data falling south to 65S.
 so <- occurrence %>% filter(decimalLatitude < -65) %>% select(species, decimalLongitude, decimalLatitude)
 ```
 
+create a map with antarctic polar stereo projection.
+
     crsAntartica <-  leafletCRS(
       crsClass = 'L.Proj.CRS',
       code = 'EPSG:3031',
@@ -417,7 +419,7 @@ so <- occurrence %>% filter(decimalLatitude < -65) %>% select(species, decimalLo
     mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCopyJump = FALSE)) %>%
         setView(0, -90, startZoom) %>%
         addCircleMarkers(lng = so$decimalLongitude, lat = so$decimalLatitude,
-                         fillOpacity = 0.5, radius = 6, stroke = FALSE, color = "#ff0000",
+                         fillOpacity = 0.4, radius = 6, stroke = FALSE, color = "#f0060",
                          labelOptions = labelOptions(textOnly = FALSE)) %>%
             addWMSTiles(baseUrl = "https://maps.environments.aq/mapcache/antarc/?",
                     layers = "antarc_ramp_bath_shade_mask",
@@ -425,16 +427,6 @@ so <- occurrence %>% filter(decimalLatitude < -65) %>% select(species, decimalLo
                     attribution = "Background imagery courtesy <a href='http://www.environments.aq/'>environments.aq</a>") %>%
         addGraticule()
     mps
-
-``` r
-LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
-map_leaflet(occ_krills, "decimalLongitude", "decimalLatitude", size=1, color="blue")
-xy <- occ_krills[c("decimalLongitude","decimalLatitude")]
-#download an environmental layer
-env <- getData('worldclim', var='bio', res=10) 
-title(main = bquote(italic(.("Euphausia superba")) ~occurrences~on~Annual~mean~temperature~'(dCx10)'))
-points(xy, col='blue', pch=20)
-```
 
 ropensci
 --------

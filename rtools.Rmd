@@ -395,6 +395,7 @@ Here we select occurrence data falling south to 65S.
 so <- occurrence %>% filter(decimalLatitude < -65) %>% select(species, decimalLongitude, decimalLatitude)
 ```
 
+create a map with antarctic polar stereo projection.
 ```
 crsAntartica <-  leafletCRS(
   crsClass = 'L.Proj.CRS',
@@ -420,18 +421,6 @@ mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCo
 mps
 
 ```
-
-```{r, echo = TRUE, eval = FALSE}
-LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
-map_leaflet(occ_krills, "decimalLongitude", "decimalLatitude", size=1, color="blue")
-xy <- occ_krills[c("decimalLongitude","decimalLatitude")]
-#download an environmental layer
-env <- getData('worldclim', var='bio', res=10) 
-title(main = bquote(italic(.("Euphausia superba")) ~occurrences~on~Annual~mean~temperature~'(dCx10)'))
-points(xy, col='blue', pch=20)
-```
-
-
 
 ## ropensci
 In addition to the above mentioned R packages and tools, [ropensci](https://ropensci.org/) is an online forum open to all interested programmers and scientists for the use and development of R packages. Users can find an amazing array of interesting tools and contribute to their development.
