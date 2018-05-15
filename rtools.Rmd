@@ -410,7 +410,7 @@ startZoom <- 1
 mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCopyJump = FALSE)) %>%
     setView(0, -90, startZoom) %>%
     addCircleMarkers(lng = so$decimalLongitude, lat = so$decimalLatitude,
-                     fillOpacity = 0.5, radius = 6, stroke = FALSE, color = "#060",
+                     fillOpacity = 0.4, radius = 6, stroke = FALSE, color = "#f0060",
                      labelOptions = labelOptions(textOnly = FALSE)) %>%
         addWMSTiles(baseUrl = "https://maps.environments.aq/mapcache/antarc/?",
                 layers = "antarc_ramp_bath_shade_mask",

@@ -392,10 +392,39 @@ Ts <- occurrence %>% filter(species == "Triandrophyllum subtrifidum") %>% select
 
 lons = Ts$decimalLongitude
 lats = Ts$decimalLatitude
-leaflet(Ts) %>% addTiles() %>% addCircleMarkers(lng = lons, lat = lats, weight = 0.2)
+leaflet(Ts) %>% addTiles() %>% addCircleMarkers(lng = lons, lat = lats, weight = 0.1)
 ```
 
-We can select part of the occurrences and project them differently.
+We can select part of the occurrences and project them differently, such as by using polar stereographic projection.
+
+Here we select occurrence data falling south to 65S.
+
+``` r
+so <- occurrence %>% filter(decimalLatitude < -65) %>% select(species, decimalLongitude, decimalLatitude)
+```
+
+    crsAntartica <-  leafletCRS(
+      crsClass = 'L.Proj.CRS',
+      code = 'EPSG:3031',
+      proj4def = '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+      resolutions = c(8192, 4096, 2048, 1024, 512, 256),
+      origin = c(-4194304, 4194304),
+      bounds =  list( c(-14194304, -14194304), c(14194304, 14194304) )
+    )
+
+    startZoom <- 1
+
+    mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCopyJump = FALSE)) %>%
+        setView(0, -90, startZoom) %>%
+        addCircleMarkers(lng = so$decimalLongitude, lat = so$decimalLatitude,
+                         fillOpacity = 0.5, radius = 6, stroke = FALSE, color = "#ff0000",
+                         labelOptions = labelOptions(textOnly = FALSE)) %>%
+            addWMSTiles(baseUrl = "https://maps.environments.aq/mapcache/antarc/?",
+                    layers = "antarc_ramp_bath_shade_mask",
+                    options = WMSTileOptions(format = "image/png", transparent = TRUE),
+                    attribution = "Background imagery courtesy <a href='http://www.environments.aq/'>environments.aq</a>") %>%
+        addGraticule()
+    mps
 
 ``` r
 LongLat = CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
