@@ -232,6 +232,38 @@ taxamodel(taxa = "Animalia", rank = "Genus", method = "logistic")
 
 ![](rtools_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
+Here we employ dplyr functions to explore the dataset *data\_m* for a little. We would love to see what phyla of Animalia there are in the dataset and how frequently each of them appears.</br>
+
+``` r
+phyla_rank <- data_m %>% 
+  filter(Kingdoms == "Animalia") %>% 
+  group_by(Phyla) %>% 
+  summarize(sum = n())
+```
+
+It shows that *Arthropoda*, *Bryozoa*, *Chordata*, *Mollusca*, etc., appear quite frequently, while *Tardigrada*, *Ctenophora*, *Chaetognatha* have relatively low frequencies, among others. </br>
+
+To show how species discoveries of Mollusca and Tardigrada a ccumulate overtime and how well logistic models fit the discovery growths. </br>
+
+``` r
+taxamodel("Mollusca", "Species", "logistic")
+```
+
+![](rtools_files/figure-markdown_github/unnamed-chunk-21-1.png)
+
+``` r
+taxamodel("Tardigrada", "Species", "logistic")
+```
+
+![](rtools_files/figure-markdown_github/unnamed-chunk-21-2.png)
+
+Based on the accumulation data and the logistic models, we can predict how many species are expected to exist in the region and how many remain to be found.
+
+``` r
+taxa_rich("Mollusca", "Species")
+taxa_rich("Tardigrada", "Species")
+```
+
 More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>
 
 Visualization
@@ -411,12 +443,17 @@ create a map with antarctic polar stereo projection.
       proj4def = '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
       resolutions = c(8192, 4096, 2048, 1024, 512, 256),
       origin = c(-4194304, 4194304),
-      bounds =  list( c(-14194304, -14194304), c(14194304, 14194304) )
+      bounds =  list( c(-4194304, -4194304), c(4194304, 4194304) )
     )
 
     startZoom <- 1
 
-    mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCopyJump = FALSE)) %>%
+    #add border
+    Before doring this, check where leaflet is saved
+    system.file(package = "leaflet")
+
+
+    mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, maxzoom = 5, worldCopyJump = FALSE)) %>%
         setView(0, -90, startZoom) %>%
         addCircleMarkers(lng = so$decimalLongitude, lat = so$decimalLatitude,
                          fillOpacity = 0.4, radius = 6, stroke = FALSE, color = "#f0060",
@@ -425,7 +462,7 @@ create a map with antarctic polar stereo projection.
                     layers = "antarc_ramp_bath_shade_mask",
                     options = WMSTileOptions(format = "image/png", transparent = TRUE),
                     attribution = "Background imagery courtesy <a href='http://www.environments.aq/'>environments.aq</a>") %>%
-        addGraticule()
+    addGraticule()
     mps
 
 ropensci

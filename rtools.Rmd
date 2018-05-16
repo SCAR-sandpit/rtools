@@ -214,6 +214,30 @@ no_rows
 taxamodel(taxa = "Animalia", rank = "Genus", method = "logistic")
 ```
 
+Here we employ dplyr functions to explore the dataset *data_m* for a little. We would love to see what phyla of Animalia there are in the dataset and how frequently each of them appears.</br>
+```{r, echo = TRUE, eval = FALSE}
+phyla_rank <- data_m %>% 
+  filter(Kingdoms == "Animalia") %>% 
+  group_by(Phyla) %>% 
+  summarize(sum = n())
+```
+
+It shows that *Arthropoda*, *Bryozoa*, *Chordata*, *Mollusca*, etc., appear quite frequently, while *Tardigrada*, *Ctenophora*, *Chaetognatha* have relatively low frequencies, among others. </br>
+
+To show how species discoveries of Mollusca and Tardigrada a ccumulate overtime and how well logistic models fit the discovery growths. </br>
+```{r, echo = TRUE}
+taxamodel("Mollusca", "Species", "logistic")
+taxamodel("Tardigrada", "Species", "logistic")
+```
+
+Based on the accumulation data and the logistic models, we can predict how many species are expected to exist in the region and how many remain to be found.
+
+```{r, echo = TRUE, eval = FALSE}
+taxa_rich("Mollusca", "Species")
+taxa_rich("Tardigrada", "Species")
+
+```
+
 More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>
 
 ## Visualization
