@@ -405,8 +405,12 @@ crsAntartica <-  leafletCRS(
 
 startZoom <- 1
 
+#add border
+Before doring this, check where leaflet is saved
+system.file(package = "leaflet")
 
-mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, worldCopyJump = FALSE)) %>%
+
+mps <- leaflet(options = leafletOptions(crs = crsAntartica, minZoom = 0, maxzoom = 5, worldCopyJump = FALSE)) %>%
     setView(0, -90, startZoom) %>%
     addCircleMarkers(lng = so$decimalLongitude, lat = so$decimalLatitude,
                      fillOpacity = 0.4, radius = 6, stroke = FALSE, color = "#f0060",
