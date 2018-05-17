@@ -152,6 +152,15 @@ A`biotaxa` dataset should contain at least two columns of taxa classifications -
 
 ``` r
 library(biotaxa)
+```
+
+    ## Warning: replacing previous import 'drc::gaussian' by 'stats::gaussian'
+    ## when loading 'biotaxa'
+
+    ## Warning: replacing previous import 'drc::getInitial' by 'stats::getInitial'
+    ## when loading 'biotaxa'
+
+``` r
 head(data_m)
 ```
 
@@ -257,11 +266,53 @@ taxamodel("Tardigrada", "Species", "logistic")
 
 ![](rtools_files/figure-markdown_github/unnamed-chunk-21-2.png)
 
-Based on the accumulation data and the logistic models, we can predict how many species are expected to exist in the region and how many remain to be found.
+Based on the accumulation data and the logistic models, we can predict how many species are expected to exist in the region and how many of them remain to be found.
 
 ``` r
 taxa_rich("Mollusca", "Species")
+```
+
+    ## A logistic regression model predicts there exists 2889 species of Mollusca in this region. 2787 species have been found and 102 remain to be discovered.
+
+``` r
 taxa_rich("Tardigrada", "Species")
+```
+
+    ## Warning in sqrt(diag(varMat)): NaNs produced
+
+    ## A logistic regression model predicts there exists 310 species of Tardigrada in this region. 42 species have been found and 268 remain to be discovered.
+
+We can write a function to query the rank of an interested taxa.
+
+``` r
+rank_query <- function(in_taxa) {
+  ls <- alltaxalist(data_m) %>% filter(taxa == in_taxa)
+  out_rank <- tolower(as.character(ls$rank))
+  if((strsplit(out_rank, ""))[[1]][1] == "o") {
+    paste(in_taxa, " is an ", out_rank, ".", sep = "")
+  } else {
+    paste(in_taxa, " is a ", out_rank, ".", sep = "")
+  }
+}
+```
+
+Test the function
+
+``` echo
+rank_query("Salpida")
+rank_query("Arthropoda")
+```
+
+Users can find the basic taxonomic information of the interested taxa. In this case, *Salpida*.</br>
+
+``` r
+data_m %>% filter(Orders == "Salpida") %>% summarize(phylum = unique(Phyla), class = unique(Classes), order = unique(Orders))
+```
+
+To find how many families there are in *Salpida*.
+
+``` r
+data_m %>% filter(Orders == "Salpida") %>% summarize(n.family = unique(length(Families)))
 ```
 
 More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>

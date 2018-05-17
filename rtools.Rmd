@@ -225,18 +225,49 @@ phyla_rank <- data_m %>%
 It shows that *Arthropoda*, *Bryozoa*, *Chordata*, *Mollusca*, etc., appear quite frequently, while *Tardigrada*, *Ctenophora*, *Chaetognatha* have relatively low frequencies, among others. </br>
 
 To show how species discoveries of Mollusca and Tardigrada a ccumulate overtime and how well logistic models fit the discovery growths. </br>
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = TRUE}
 taxamodel("Mollusca", "Species", "logistic")
 taxamodel("Tardigrada", "Species", "logistic")
 ```
 
-Based on the accumulation data and the logistic models, we can predict how many species are expected to exist in the region and how many remain to be found.
+Based on the accumulation data and the logistic models, we can predict how many species are expected to exist in the region and how many of them remain to be found.
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 taxa_rich("Mollusca", "Species")
 taxa_rich("Tardigrada", "Species")
-
 ```
+
+We can write a function to query the rank of an interested taxa. 
+
+```{r, echo = TRUE, eval = TRUE} 
+rank_query <- function(in_taxa) {
+  ls <- alltaxalist(data_m) %>% filter(taxa == in_taxa)
+  out_rank <- tolower(as.character(ls$rank))
+  if((strsplit(out_rank, ""))[[1]][1] == "o") {
+    paste(in_taxa, " is an ", out_rank, ".", sep = "")
+  } else {
+    paste(in_taxa, " is a ", out_rank, ".", sep = "")
+  }
+}
+```
+
+Test the function
+```{echo = TRUE, eval = TRUE, results = "hold"}
+rank_query("Salpida")
+rank_query("Arthropoda")
+```
+
+Users can find the basic taxonomic information of the interested taxa. In this case, *Salpida*.</br>
+
+```{r, echo = TRUE, eval = FALSE}
+data_m %>% filter(Orders == "Salpida") %>% summarize(phylum = unique(Phyla), class = unique(Classes), order = unique(Orders))
+```
+
+To find how many families there are in *Salpida*.
+```{r, echo = TRUE, eval = FALSE}
+data_m %>% filter(Orders == "Salpida") %>% summarize(n.family = unique(length(Families)))
+```
+
 
 More can be found on [biotaxa](https://github.com/hhsieh/biotaxa_Rpackage).</br>
 
