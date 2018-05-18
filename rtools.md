@@ -38,7 +38,7 @@ occ_get(key=855998194, return='data')
 
 Alternatively, users can download data directly from GBIF. For instance, [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-f762-11e1-a439-00145eb45e9a%22) harbors more than 50,000 occurrences of over 40,000 plant specimens from Antarctica, the sub-Antarctic islands and surrounding continents.
 
-Or, download and import the data by takig one step as follows.
+Users can also download and import the data by takig one step as follows.
 
     dd_gbif <- occ_download_get(key = "0000066-140928181241064", overwrite = TRUE) %>% 
         occ_download_import(dd_gbif_download, na.strings = c("", NA))
@@ -60,7 +60,7 @@ data <- occurrence("Actinauge verrillii", geometry = "POLYGON ((54.60 51.16772, 
 Data browsing, cleaning and wrangling
 -------------------------------------
 
-**- tidyverse -**</br> The <a href = "https://www.tidyverse.org/packages/"> **tidyverse**</a> is a collection of R packages designed for data science. The collection includes <a href = "http://dplyr.tidyverse.org/">**dplyr**</a> for data frame creation and manipulation, <a href = "http://readr.tidyverse.org/">**readr**</a> and <a href = "http://readxl.tidyverse.org/">**readxl**</a> for reading data from text or EXCEL files, <a href = "http://purrr.tidyverse.org/">**purrr**</a> for speeding up functional prorgramminga and <a href = "http://ggplot2.tidyverse.org/">**ggplot2**</a> for visualization.
+**- tidyverse -**</br> The <a href = "https://www.tidyverse.org/packages/"> **tidyverse**</a> is a collection of R packages designed for data science. The collection includes <a href = "http://dplyr.tidyverse.org/">**dplyr**</a> for data frame creation and manipulation, <a href = "http://readr.tidyverse.org/">**readr**</a> and <a href = "http://readxl.tidyverse.org/">**readxl**</a> for reading data from text or EXCEL files, <a href = "http://purrr.tidyverse.org/">**purrr**</a> for speeding up functional prorgramming aand <a href = "http://ggplot2.tidyverse.org/">**ggplot2**</a> for visualization.
 
 Users can install all the packages in the tidyverse by running
 
@@ -71,12 +71,12 @@ Alternatively, install one or more single package(s) by running, for instance,
     install.packages("tidyr")
     install.packages("dplyr")
 
-Or download the development versions from GitHub
+,or download the development versions from GitHub
 
     devtools::install_github("tidyverse/tidyr")
     devtools::install_github("tidyverse/dplyr")
 
-basic commands:
+Basic commands in [dplyr](http://genomicsclass.github.io/book/pages/dplyr_tutorial.html) include:
 
 ``` r
 filer() 
@@ -86,7 +86,7 @@ arrange()
 group_by() 
 ```
 
-basic uses of these commands:
+Some basic uses of these commands:
 
 ``` r
 library(robis)
@@ -126,7 +126,7 @@ match_taxa(names)
 
 `check_fields()` checks if all OBIS required fields are present in an occurrence table and if any values are missing. This is especially useful for users who would like to contribute their data to the OBIS data portal.
 
-More functions can be found on \[obistools\]&lt;"<https://github.com/iobis/obistools>"&gt;</br>
+More functions can be found on [obistools](https://github.com/iobis/obistools)</br>
 
 Taxonomy Tools
 --------------
