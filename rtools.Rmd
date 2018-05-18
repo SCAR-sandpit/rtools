@@ -363,7 +363,7 @@ dim(occurrence) #Here it shows there are 52,181 occurrences
 length(unique(occurrence$taxonKey)) #there are 2,653 unique taxon keys
 ```
 
-We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ_search() and compute their regional distributions in Antarctica (60-90$^\circ$S), subantarctica (45-60$^\circ$S), south temperate (30-45$^\circ$S), tropics (30$^\circ$N-30$^\circ$S), north temperate (30-60$^\circ$N) and the arctic (60-90$^\circ$N).</br>
+We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ_search() and compute their regional distributions in Antarctica (60-90$^\circ$S), subantarctica (45-60&deg;S), south temperate (30-45$^\circ$S), tropics (30$^\circ$N-30$^\circ$S), north temperate (30-60$^\circ$N) and the arctic (60-90$^\circ$N).</br>
 
 First, we write a function to retrieve all of the occurrence data of the 10 taxon keys via using occ_search() and compute their regional distributions
 
