@@ -406,7 +406,7 @@ Here we use [Antarctic Plant Database](%22https://www.gbif.org/dataset/82d9ff5c-
     #find how many unique taxon keys there are in the dataset. 
     length(unique(occurrence$taxonKey)) #there are 2,653 unique taxon keys
 
-We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ\_search() and compute their regional distributions in Antarctica (60-90**<sup>∘</sup>S), subantarctica (45-60°S), south temperate (30-45**<sup>∘</sup>S), tropics (30**<sup>∘</sup>N-30**<sup>∘</sup>S), north temperate (30-60**<sup>∘</sup>N) and the arctic (60-90**<sup>∘</sup>N).</br>
+We will retrieve all of the occurrence data of the first 10 taxon keys by using the GBIF occ\_search() and compute their regional distributions in Antarctica (60-90°S), subantarctica (45-60°S), south temperate (30-45°S), tropics (30°N-30°S), north temperate (30-60°N) and the arctic (60-90°N).</br>
 
 First, we write a function to retrieve all of the occurrence data of the 10 taxon keys via using occ\_search() and compute their regional distributions
 
